@@ -63,7 +63,7 @@ def generate_daily_calls(jalali_year, jalali_month, jalali_day):
     
     for _ in range(num_calls):
         service_name = random.choice(service_names)
-        provider_name = random.choice(providers)  # One provider for many services
+        provider_name = random.choice(providers)
         consumer_name = random.choice(consumers)
         response_code = get_response_code()
 
