@@ -71,7 +71,7 @@ for year in jalali_years:
 # Convert the data to a pandas DataFrame
 df = pd.DataFrame(data)
 
-# Save the data to a CSV file (without printing anything to the terminal)
+# Save the data to a CSV file
 output_file = "superset_dashboard_data.csv"
 df.to_csv(output_file, index=False)
 
