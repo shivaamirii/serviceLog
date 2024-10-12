@@ -3,14 +3,14 @@ import pandas as pd
 from persiantools.jdatetime import JalaliDate
 import clickhouse_connect
 
-a# Connect to ClickHouse server
+# Connect to ClickHouse server
 client = clickhouse_connect.get_client(host='localhost', port=8123)
 
 table_name = "service_test_logs" # it can change 
 
 # Create the table if it doesn't exist
 # this method is used to execute SQL commands on ClickHouse. 
-client.command('''
+client.command(f'''
 CREATE TABLE IF NOT EXISTS {table_name} (
     jalali_year Int32,
     jalali_month Int32,
