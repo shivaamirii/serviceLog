@@ -6,9 +6,12 @@ import clickhouse_connect
 a# Connect to ClickHouse server
 client = clickhouse_connect.get_client(host='localhost', port=8123)
 
+table_name = "service_test_logs" # it can change 
+
 # Create the table if it doesn't exist
+# this method is used to execute SQL commands on ClickHouse. 
 client.command('''
-CREATE TABLE IF NOT EXISTS service_logs (
+CREATE TABLE IF NOT EXISTS {table_name} (
     jalali_year Int32,
     jalali_month Int32,
     jalali_day Int32,
@@ -27,10 +30,10 @@ jalali_month_days = {
     7: 30, 8: 30, 9: 30, 10: 30, 11: 30,       # 30 days months
     12: 29                                       # 29 days in month 12
 }
-service_names = [f"service_{i}" for i in range(1, 51)]  # 50 random services
+service_names = [f"service_{number}" for number in range(1, 51)]  # 50 random services
 providers = ['sabtahval', 'naji', 'vezaratkeshvar', 'eadlir', 'sazmanbourse', 
              'taxgovir', 'eghtesad', 'tavnir', 'gas', 'abofazelab']  # 10 providers
-consumers = [f"consumer_org_{i}" for i in range(1, 26)]  # 25 random consumer organizations
+consumers = [f"consumer_org_{number}" for number in range(1, 26)]  # 25 random consumer organizations
 response_code_distribution = {
     '200-299': 60,  # 60% chance
     '300-399': 5,   # 5% chance
@@ -79,6 +82,6 @@ for year in jalali_years:
             data.extend(generate_daily_calls(year, month, day))
 
 # Insert data into ClickHouse
-client.insert('service_logs', data, column_names=['jalali_year', 'jalali_month', 'jalali_day', 'service_name', 'provider_name', 'consumer_name', 'response_code'])
+client.insert(table_name, data, column_names=['jalali_year', 'jalali_month', 'jalali_day', 'service_name', 'provider_name', 'consumer_name', 'response_code'])
 
 print("Data inserted successfully into ClickHouse!")
