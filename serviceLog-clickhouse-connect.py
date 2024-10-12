@@ -64,7 +64,7 @@ def generate_daily_calls(jalali_year, jalali_month, jalali_day):
     num_calls = random.randint(400, 500)  # Ensure between 400-500 calls per day
     rows = []
     
-    for _ in range(num_calls):
+    for count in range(num_calls):
         service_name = random.choice(service_names)
         provider_name = random.choice(providers)
         consumer_name = random.choice(consumers)
