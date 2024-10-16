@@ -66,7 +66,7 @@ def generate_daily_calls(jalali_year, jalali_month, jalali_day):
     
     for count in range(num_calls):
         service_name = random.choice(service_names)
-        provider_name = service_provider_mapping[service_name]  # Get the specific provider for this serviceprovider_name = random.choice(providers)
+        provider_name = service_provider_mapping[service_name]  # Get the specific provider for each service
         consumer_name = random.choice(consumers)
         response_code = get_response_code()
 
