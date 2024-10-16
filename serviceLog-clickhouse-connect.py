@@ -4,9 +4,9 @@ from persiantools.jdatetime import JalaliDate
 import clickhouse_connect
 
 # Connect to ClickHouse server
-client = clickhouse_connect.get_client(host='localhost', port=8123)
+client = clickhouse_connect.get_client(host='192.168.100.217', port=8123)
 
-table_name = "service_test_logs" # it can change 
+table_name = "service_call" # it can change 
 
 # Create the table if it doesn't exist
 # this method is used to execute SQL commands on ClickHouse. 
@@ -34,30 +34,30 @@ service_names = [f"service_{number}" for number in range(1, 51)]  # 50 random se
 providers = ['sabtahval', 'naji', 'vezaratkeshvar', 'eadlir', 'sazmanbourse', 
              'taxgovir', 'eghtesad', 'tavnir', 'gas', 'abofazelab']  # 10 providers
 consumers = [f"consumer_org_{number}" for number in range(1, 26)]  # 25 random consumer organizations
-response_code_distribution = {
-    '200-299': 60,  # 60% chance
-    '300-399': 5,   # 5% chance
-    '400-499': 20,  # 20% chance
-    '500-599': 15   # 15% chance
-}
-response_code_ranges = {
-    '200-299': range(200, 300),
-    '300-399': range(300, 400),
-    '400-499': range(400, 500),
-    '500-599': range(500, 600)
-}
 
-# Function to generate a response code based on distribution
+# Assign each service to a single provider
+service_provider_mapping = {service: random.choice(providers) for service in service_names}
+
+response_code_distribution = {
+    '200': 60,  # 60% chance
+    '300': 5,   # 5% chance
+    '400': 20,  # 20% chance
+    '500': 15   # 15% chance
+}
+response_codes = [200, 300, 400, 500]
+
+# Adjusted function to select only specific codes based on probability distribution
 def get_response_code():
     rand = random.randint(1, 100)
     if rand <= 60:
-        return random.choice(response_code_ranges['200-299'])
+        return 200
     elif rand <= 65:
-        return random.choice(response_code_ranges['300-399'])
+        return 300
     elif rand <= 85:
-        return random.choice(response_code_ranges['400-499'])
+        return 400
     else:
-        return random.choice(response_code_ranges['500-599'])
+        return 500
+
 
 # Function to generate daily service calls
 def generate_daily_calls(jalali_year, jalali_month, jalali_day):
@@ -66,7 +66,7 @@ def generate_daily_calls(jalali_year, jalali_month, jalali_day):
     
     for count in range(num_calls):
         service_name = random.choice(service_names)
-        provider_name = random.choice(providers)
+        provider_name = service_provider_mapping[service_name]  # Get the specific provider for this serviceprovider_name = random.choice(providers)
         consumer_name = random.choice(consumers)
         response_code = get_response_code()
 
