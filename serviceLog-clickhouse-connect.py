@@ -4,7 +4,7 @@ from persiantools.jdatetime import JalaliDate
 import clickhouse_connect
 
 # Connect to ClickHouse server
-client = clickhouse_connect.get_client(host='192.168.100.217', port=8123)
+client = clickhouse_connect.get_client(host='localhost', port=8123)
 
 table_name = "service_call" # it can change 
 
